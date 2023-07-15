@@ -10,6 +10,24 @@ $('#search').change(function () {
   dumpBookmarks($('#search').val());
 });
 
+// Trying jsTree instanciation - from official website guidance!
+$(function () { 
+  //create an instance when the DOM is ready 
+  $('#jstree_demo_div').jstree();
+  
+  // bind to events triggered on the tree
+  $('#jstree_demo_div').on("changed.jstree", function (e, data) {
+    console.log(data.selected);
+  });
+  
+  // interact with the tree - either way is OK (uncomment not used)
+  $('button').on('click', function() {
+    $('#jstree_demo_div').jstree(true).select_node('child_node_1');
+    //$(function () { $('#jstree_demo_div').jstree(); });
+    //$.jstree.reference('#jstree').select_node('child_node_1');
+  });
+});
+
 // Traverse the bookmark tree, and print the folder and nodes.
 function dumpBookmarks(query) {
   const bookmarkTreeNodes = chrome.bookmarks.getTree(function (
