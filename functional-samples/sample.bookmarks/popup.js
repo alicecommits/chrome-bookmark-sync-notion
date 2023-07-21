@@ -4,13 +4,15 @@
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
 
+// Top UI Search Bar -------------------
 // Search the bookmarks when entering the search keyword.
 $('#search').change(function () {
   $('#bookmarks').empty();
   dumpBookmarks($('#search').val());
 });
 
-// Trying jsTree instanciation - from official website guidance!
+// PERSO ALICE ---------- Trying jsTree instanciation - from official website guidance!
+// TODO: USE IT INSTEAD OF NESTED BULLET POINTS FROM ORIGINAL TEMPLATE
 $(function () { 
   //create an instance when the DOM is ready 
   $('#jstree_demo_div').jstree();
@@ -19,14 +21,32 @@ $(function () {
   $('#jstree_demo_div').on("changed.jstree", function (e, data) {
     console.log(data.selected);
   });
-  
-  // interact with the tree - either way is OK (uncomment not used)
-  $('button').on('click', function() {
-    $('#jstree_demo_div').jstree(true).select_node('child_node_1');
-    //$(function () { $('#jstree_demo_div').jstree(); });
-    //$.jstree.reference('#jstree').select_node('child_node_1');
-  });
 });
+
+// interact with the tree - either way is OK (uncomment not used)
+$('#button1').on('click', function() {
+  $('#jstree_demo_div').jstree(true).select_node('child_node_1');
+  //$(function () { $('#jstree_demo_div').jstree(); });
+  //$.jstree.reference('#jstree').select_node('child_node_1');
+});
+
+// TESTING DUMMY FETCH TOWARDS https://jsonplaceholder.typicode.com/posts/1
+
+const myDummyURL = 'https://jsonplaceholder.typicode.com/posts/1';
+$("#fetch1").click(function() {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", myDummyURL, true);
+  xhr.onreadystatechange = function() {
+  if (xhr.readyState == 4) {
+    // innerText does not let the attacker inject HTML elements.
+    document.getElementById("result").innerText = xhr.responseText;
+    }
+  }
+  xhr.send();
+});
+//TODO: try with jQuery AJAX instead?
+
+// Original samples.bookmark code --------------------------------------
 
 // Traverse the bookmark tree, and print the folder and nodes.
 function dumpBookmarks(query) {
@@ -46,6 +66,7 @@ function dumpTreeNodes(bookmarkNodes, query) {
   return list;
 }
 
+// test effect of anchor on bullet point nesting
 function dumpNode(bookmarkNode, query) {
   let span = '';
   if (bookmarkNode.title) {

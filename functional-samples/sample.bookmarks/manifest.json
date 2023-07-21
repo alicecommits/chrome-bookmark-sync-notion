@@ -4,7 +4,10 @@
   "version": "1.0",
   "manifest_version": 3,
   "permissions": [
-    "bookmarks"
+    "bookmarks",
+    "scripting",
+    "activeTab",
+    "https://jsonplaceholder.typicode.com/*"
   ],
   "action": {
     "default_title": "Bookmark Sync With Notion",
