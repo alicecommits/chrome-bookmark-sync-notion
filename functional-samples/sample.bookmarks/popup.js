@@ -4,15 +4,10 @@
 // license that can be found in the LICENSE file or at
 // https://developers.google.com/open-source/licenses/bsd
 
-// Top UI Search Bar -------------------
-// Search the bookmarks when entering the search keyword.
-$('#search').change(function () {
-  $('#bookmarks').empty();
-  dumpBookmarks($('#search').val());
-});
 
-// PERSO ALICE ---------- Trying jsTree instanciation - from official website guidance!
-// TODO: USE IT INSTEAD OF NESTED BULLET POINTS FROM ORIGINAL TEMPLATE
+// PERSO ALICE --------------------------------------------------------------------------
+// jsTree tryouts ---------------------------------------------------------------------
+
 $(function () { 
   //create an instance when the DOM is ready 
   $('#jstree_demo_div').jstree();
@@ -29,10 +24,42 @@ $('#button1').on('click', function() {
   //$.jstree.reference('#jstree').select_node('child_node_1');
 });
 
-// TESTING DUMMY FETCH TOWARDS https://jsonplaceholder.typicode.com/posts/1
+/*
+$(document).ready(function() {
+
+  $("#container").html('<div class="treeview"></div>');
+  $(".treeview").jstree({
+  "html_data" : {
+  "data" : "<li id='root'><a href=''>Root node</a><ul><li><a " + 
+  " href=''>Child node</a></li></ul></li>"
+  },
+  "plugins" : [ "themes", "html_data" ]
+  });
+});
+*/
+
+// TRAVERSAL TEST ALICE - REDUCED TO 1 FOLDER ------------------------
+/*
+chrome.bookmarks.get(
+  idOrIdList: string | [string, ...string[]],
+  callback?: function,
+)
+*/
+function miniDumpBookmarks() {
+  const bookmarkTreeNodes = chrome.bookmarks.get('0', function (
+    bookmarkTreeNodes
+  ) {
+    //console.log(bookmarkTreeNodes);
+    $('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
+  });
+}
+
+// FETCH -----------------------------------------------------------------------  
+// Using dummy JSON PlaceHolder API https://jsonplaceholder.typicode.com/posts/1
+//TODO: try with jQuery AJAX instead? / fetch() + scripting?
 const myDummyURL = 'https://jsonplaceholder.typicode.com/posts/1';
 $("#fetch1").click(function() {
-  var xhr = new XMLHttpRequest();
+  let xhr = new XMLHttpRequest();
   xhr.open("GET", myDummyURL, true);
   xhr.onreadystatechange = function() {
   if (xhr.readyState == 4) {
@@ -42,13 +69,29 @@ $("#fetch1").click(function() {
   }
   xhr.send();
 });
-//TODO: try with jQuery AJAX instead?
 
-// Original samples.bookmark code --------------------------------------
+
+// TODOS
+// Objective with jsTree:
+// USE IT INSTEAD OF NESTED BULLET POINTS FROM ORIGINAL TEMPLATE/CSS
+// Traverse the bookmark tree, and print the folder and nodes.
+// chrome bookmarks GET Notions vs. bookmarks.getTree:
+// tbd if do a tree comparison (breadth/depth?) and then sync only the changes?
+
+// Show add and edit links when hover over.
+// delete, add, edit <=> Our C(R)UD operations to make happen in Notion!
+// END OF PERSO ALICE ----------------------------------------------------------------
+
+
+// Original samples.bookmark code ----------------------------------------------------
+
+// Search the bookmarks when entering the search keyword.
+$('#search').change(function () {
+  $('#bookmarks').empty();
+  dumpBookmarks($('#search').val());
+});
 
 // Traverse the bookmark tree, and print the folder and nodes.
-// chrome bookmarks GET Notions vs. bokmarks.getTree:
-// tbd if do a tree comparison (breadth/depth?) and then sync only the changes?
 function dumpBookmarks(query) {
   const bookmarkTreeNodes = chrome.bookmarks.getTree(function (
     bookmarkTreeNodes
@@ -57,16 +100,12 @@ function dumpBookmarks(query) {
   });
 }
 
-function miniTreeInvestigate() {
-  $('#bookmarks').append("this is gonna be cool.")
-}
-
-// jQuery tree forming todo
 function dumpTreeNodes(bookmarkNodes, query) {
   const list = $('<ul>');
   for (let i = 0; i < bookmarkNodes.length; i++) {
     list.append(dumpNode(bookmarkNodes[i], query));
   }
+
   return list;
 }
 
@@ -85,6 +124,7 @@ function dumpNode(bookmarkNode, query) {
     const anchor = $('<a>');
     anchor.attr('href', bookmarkNode.url);
     anchor.text(bookmarkNode.title);
+
     /*
      * When clicking on a bookmark in the extension, a new tab is fired with
      * the bookmark url.
@@ -109,7 +149,6 @@ function dumpNode(bookmarkNode, query) {
       : $('<input>');
 
     // Show add and edit links when hover over.
-    // delete, add, edit <=> Our C(R)UD operations to make happen in Notion!
     span
       .hover(
         function () {
@@ -226,27 +265,13 @@ function dumpNode(bookmarkNode, query) {
 
   const li = $(bookmarkNode.title ? '<li>' : '<div>').append(span);
 
-  if (bookmarkNode.children && bookmarkNode.children.length > 0) {  
+  if (bookmarkNode.children && bookmarkNode.children.length > 0) {
     li.append(dumpTreeNodes(bookmarkNode.children, query));
   }
 
   return li;
 }
 
-/*
-$(document).ready(function() {
-
-  $("#container").html('<div class="treeview"></div>');
-  $(".treeview").jstree({
-  "html_data" : {
-  "data" : "<li id='root'><a href=''>Root node</a><ul><li><a " + 
-  " href=''>Child node</a></li></ul></li>"
-  },
-  "plugins" : [ "themes", "html_data" ]
-  });
-});
-*/
-
 document.addEventListener('DOMContentLoaded', function () {
-  miniTreeInvestigate(); //dumpBookmarks();
+  miniDumpBookmarks();
 });
