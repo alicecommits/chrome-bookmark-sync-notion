@@ -22,8 +22,7 @@ $(function () {
     console.log(data.selected);
   });
 });
-
-// interact with the tree - either way is OK (uncomment not used)
+// interact with demo tree - either way is OK (uncomment not used)
 $('#button1').on('click', function() {
   $('#jstree_demo_div').jstree(true).select_node('child_node_1');
   //$(function () { $('#jstree_demo_div').jstree(); });
@@ -31,7 +30,6 @@ $('#button1').on('click', function() {
 });
 
 // TESTING DUMMY FETCH TOWARDS https://jsonplaceholder.typicode.com/posts/1
-
 const myDummyURL = 'https://jsonplaceholder.typicode.com/posts/1';
 $("#fetch1").click(function() {
   var xhr = new XMLHttpRequest();
@@ -49,6 +47,8 @@ $("#fetch1").click(function() {
 // Original samples.bookmark code --------------------------------------
 
 // Traverse the bookmark tree, and print the folder and nodes.
+// chrome bookmarks GET Notions vs. bokmarks.getTree:
+// tbd if do a tree comparison (breadth/depth?) and then sync only the changes?
 function dumpBookmarks(query) {
   const bookmarkTreeNodes = chrome.bookmarks.getTree(function (
     bookmarkTreeNodes
@@ -57,16 +57,19 @@ function dumpBookmarks(query) {
   });
 }
 
+function miniTreeInvestigate() {
+  $('#bookmarks').append("this is gonna be cool.")
+}
+
+// jQuery tree forming todo
 function dumpTreeNodes(bookmarkNodes, query) {
   const list = $('<ul>');
   for (let i = 0; i < bookmarkNodes.length; i++) {
     list.append(dumpNode(bookmarkNodes[i], query));
   }
-
   return list;
 }
 
-// test effect of anchor on bullet point nesting
 function dumpNode(bookmarkNode, query) {
   let span = '';
   if (bookmarkNode.title) {
@@ -82,7 +85,6 @@ function dumpNode(bookmarkNode, query) {
     const anchor = $('<a>');
     anchor.attr('href', bookmarkNode.url);
     anchor.text(bookmarkNode.title);
-
     /*
      * When clicking on a bookmark in the extension, a new tab is fired with
      * the bookmark url.
@@ -107,6 +109,7 @@ function dumpNode(bookmarkNode, query) {
       : $('<input>');
 
     // Show add and edit links when hover over.
+    // delete, add, edit <=> Our C(R)UD operations to make happen in Notion!
     span
       .hover(
         function () {
@@ -223,13 +226,27 @@ function dumpNode(bookmarkNode, query) {
 
   const li = $(bookmarkNode.title ? '<li>' : '<div>').append(span);
 
-  if (bookmarkNode.children && bookmarkNode.children.length > 0) {
+  if (bookmarkNode.children && bookmarkNode.children.length > 0) {  
     li.append(dumpTreeNodes(bookmarkNode.children, query));
   }
 
   return li;
 }
 
+/*
+$(document).ready(function() {
+
+  $("#container").html('<div class="treeview"></div>');
+  $(".treeview").jstree({
+  "html_data" : {
+  "data" : "<li id='root'><a href=''>Root node</a><ul><li><a " + 
+  " href=''>Child node</a></li></ul></li>"
+  },
+  "plugins" : [ "themes", "html_data" ]
+  });
+});
+*/
+
 document.addEventListener('DOMContentLoaded', function () {
-  dumpBookmarks();
+  miniTreeInvestigate(); //dumpBookmarks();
 });

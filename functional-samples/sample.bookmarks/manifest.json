@@ -7,7 +7,7 @@
     "bookmarks",
     "scripting",
     "activeTab",
-    "https://jsonplaceholder.typicode.com/*"
+    "https://jsonplaceholder.typicode.com/"
   ],
   "action": {
     "default_title": "Bookmark Sync With Notion",
