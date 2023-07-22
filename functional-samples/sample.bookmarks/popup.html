@@ -10,18 +10,17 @@
     <script src="third-party/jquery-ui-1.12.1.js"></script>
   </head>
   <body>
+    <!-- Fetch test + Search input (from old samples) -->
     <div>Result from JSON PlaceHolder: </div>
     <button type="button" id="fetch1">fetch test</button>
     <div id="result"></div>
     <div>Search Bookmarks: <input id="search" /></div>
     <button type="button" id="go">Go Search!</button>
-    <h1>IT'S TREE !</h1>
-    <h3>A small tree with nodes, it's got a root (it's got a root)</h3>
-    <h4>I can't imagine a more beautiful thing!</h4>
-    <h4>It's TREE! I can tell you all about it... I mean</h4>
-    <h2>LOOK AT THIS TREE</h2>
+    
+    <h1>Bookmark Viewer + Fetch test</h1>
+    
+    <!-- eg from jsTree official website where populated from inline HTML-->
     <div id="jstree_demo_div">
-      <!-- eg from jsTree official website where populated from inline HTML-->
       <ul>
         <li>
           Root node 1
@@ -30,17 +29,24 @@
             <li>Child node 2</li>
           </ul>
         </li>
-        <li>Root node 2</li>
+        <li>Root node 2
+          <ul>
+            <li>"test</li>
+          </ul>
+        </li>
       </ul>
     </div>
     <button type="button" id="button1">tree test</button>
-    <div id="bookmarks"></div>
+    
+    <!-- bookmark Tree forming -->
+    <ul id="bookmarkList"></ul>
     <div id="editdialog"></div>
     <div id="deletedialog"></div>
     <div id="adddialog"></div>
     <div id="test-frame"></div>
     <script src="popup.js"></script>
-    <!-- trying jsTree -->
+    
+    <!-- including jsTree -->
     <script src="third-party/dist/jstree.js"></script>
     <script src="third-party/dist/jstree.min.js"></script>
   </body>

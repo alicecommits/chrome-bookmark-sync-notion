@@ -6,8 +6,24 @@
 
 
 // PERSO ALICE --------------------------------------------------------------------------
-// jsTree tryouts ---------------------------------------------------------------------
+// FETCH FEATURE (XHR FOR NOW) -------------------------------------------------------  
+// Using dummy JSON PlaceHolder API https://jsonplaceholder.typicode.com/posts/1
+//TODO: try with jQuery AJAX instead? / fetch() + scripting?
+const myDummyURL = 'https://jsonplaceholder.typicode.com/posts/1';
+$("#fetch1").click(function() {
+  let xhr = new XMLHttpRequest();
+  xhr.open("GET", myDummyURL, true);
+  xhr.onreadystatechange = function() {
+  if (xhr.readyState == 4) {
+    // innerText does not let the attacker inject HTML elements.
+    document.getElementById("result").innerText = xhr.responseText;
+    }
+  }
+  xhr.send();
+});
 
+
+// JSTREE TRYOUTS ---------------------------------------------------------------------
 $(function () { 
   //create an instance when the DOM is ready 
   $('#jstree_demo_div').jstree();
@@ -39,39 +55,60 @@ $(document).ready(function() {
 */
 
 // TRAVERSAL TEST ALICE - REDUCED TO 1 FOLDER ------------------------
-/*
-chrome.bookmarks.get(
-  idOrIdList: string | [string, ...string[]],
-  callback?: function,
-)
-*/
-function miniDumpBookmarks() {
-  const bookmarkTreeNodes = chrome.bookmarks.get('0', function (
-    bookmarkTreeNodes
-  ) {
-    //console.log(bookmarkTreeNodes);
-    $('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
-  });
-}
+// Chrome API samples
+// Search the bookmarks when entering the search keyword.
+// Get the bookmarks and display them in the popup
 
-// FETCH -----------------------------------------------------------------------  
-// Using dummy JSON PlaceHolder API https://jsonplaceholder.typicode.com/posts/1
-//TODO: try with jQuery AJAX instead? / fetch() + scripting?
-const myDummyURL = 'https://jsonplaceholder.typicode.com/posts/1';
-$("#fetch1").click(function() {
-  let xhr = new XMLHttpRequest();
-  xhr.open("GET", myDummyURL, true);
-  xhr.onreadystatechange = function() {
-  if (xhr.readyState == 4) {
-    // innerText does not let the attacker inject HTML elements.
-    document.getElementById("result").innerText = xhr.responseText;
+//GET ENTIRE TREE
+/*
+chrome.bookmarks.getTree((tree) => {
+  const bookmarkList = document.getElementById('bookmarkList');
+  displayBookmarks(tree[0].children, bookmarkList);
+});
+*/
+
+//GET A SUBTREE - getSubTree('4922') - for Folder Test only:
+const queryId = '4922';
+const bookmarkList = document.getElementById('bookmarkList');
+
+chrome.bookmarks.getSubTree(queryId)
+.then((res) => displayBookmarks(res[0].children, bookmarkList))
+.catch((err) => console.log(err));
+//TOTRY rewrite with other async/await or arrow func?
+
+//TODO: try to wrap with jsTree now that small subtree
+
+// Recursively display the bookmarks
+function displayBookmarks(nodes, parentNode) {
+  for (const node of nodes) {
+    // If the node is a bookmark, create a list item and append it to the parent node
+    if (node.url) {
+      const listItem = document.createElement('li');
+      listItem.textContent = node.title;
+      parentNode.appendChild(listItem);
+    }
+    
+    // If the node has children (=> is a folder), recursively display them
+    // Problem with 1st case: using node.url property doesn't capture 
+    // subfolders title! and neither does the original "has children" case below
+    // TODO report fix sugggestion:
+    // append both a li element, 
+    // then an ul elmeent right underneath
+    if (node.children) {
+      const subFolderTitle = node.title + node.id;
+      const listItem = document.createElement('li');
+      listItem.textContent = subFolderTitle;
+      parentNode.appendChild(listItem);
+
+      const sublist = document.createElement('ul');
+      parentNode.appendChild(sublist);
+
+      displayBookmarks(node.children, sublist);
     }
   }
-  xhr.send();
-});
+}
 
-
-// TODOS
+// TODOS --------------------------------------------------------------------------
 // Objective with jsTree:
 // USE IT INSTEAD OF NESTED BULLET POINTS FROM ORIGINAL TEMPLATE/CSS
 // Traverse the bookmark tree, and print the folder and nodes.
@@ -83,8 +120,50 @@ $("#fetch1").click(function() {
 // END OF PERSO ALICE ----------------------------------------------------------------
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Original samples.bookmark code ----------------------------------------------------
 
+/*
 // Search the bookmarks when entering the search keyword.
 $('#search').change(function () {
   $('#bookmarks').empty();
@@ -109,6 +188,9 @@ function dumpTreeNodes(bookmarkNodes, query) {
   return list;
 }
 
+*/
+
+/*
 function dumpNode(bookmarkNode, query) {
   let span = '';
   if (bookmarkNode.title) {
@@ -129,6 +211,7 @@ function dumpNode(bookmarkNode, query) {
      * When clicking on a bookmark in the extension, a new tab is fired with
      * the bookmark url.
      */
+    /*
     anchor.click(function () {
       chrome.tabs.create({ url: bookmarkNode.url });
     });
@@ -271,6 +354,7 @@ function dumpNode(bookmarkNode, query) {
 
   return li;
 }
+*/
 
 document.addEventListener('DOMContentLoaded', function () {
   miniDumpBookmarks();
