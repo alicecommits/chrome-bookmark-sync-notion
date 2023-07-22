@@ -40,19 +40,7 @@ $('#button1').on('click', function() {
   //$.jstree.reference('#jstree').select_node('child_node_1');
 });
 
-/*
-$(document).ready(function() {
 
-  $("#container").html('<div class="treeview"></div>');
-  $(".treeview").jstree({
-  "html_data" : {
-  "data" : "<li id='root'><a href=''>Root node</a><ul><li><a " + 
-  " href=''>Child node</a></li></ul></li>"
-  },
-  "plugins" : [ "themes", "html_data" ]
-  });
-});
-*/
 
 // TRAVERSAL TEST ALICE - REDUCED TO 1 FOLDER ------------------------
 // Chrome API samples
@@ -67,16 +55,43 @@ chrome.bookmarks.getTree((tree) => {
 });
 */
 
+//const injectTreeHere = document.getElementById('injectTreeHere');
+//WRAPPING IN FUNCTION TRIGGERS TREE SHAPING
+$(function () { 
+  $("#mytree").jstree();
+});
+
 //GET A SUBTREE - getSubTree('4922') - for Folder Test only:
-const queryId = '4922';
+const targetId = '4922';
 const bookmarkList = document.getElementById('bookmarkList');
 
-chrome.bookmarks.getSubTree(queryId)
-.then((res) => displayBookmarks(res[0].children, bookmarkList))
-.catch((err) => console.log(err));
-//TOTRY rewrite with other async/await or arrow func?
+chrome.bookmarks.getSubTree(targetId)
+.then( (res) => displayBookmarks(res, bookmarkList) )
+.then( () => $("#bookmarkList").jstree() )
+.catch( (err) => console.log(err) );
 
-//TODO: try to wrap with jsTree now that small subtree
+/*
+$(function () {
+  $("#bookmarkList").jstree();
+});
+*/
+
+
+
+//TOTRY rewrite with other async/await or arrow func?
+/*
+//use this to rewrite chrome bookmarks
+const convertStringToHTML = htmlString => {
+  const parser = new DOMParser();
+  const html = parser.parseFromString(htmlString, 'text/html');
+
+  return html.body;
+}
+*/
+
+
+
+//TODO: try to wrap all children within subtree with jsTree...
 
 // Recursively display the bookmarks
 function displayBookmarks(nodes, parentNode) {
@@ -95,7 +110,8 @@ function displayBookmarks(nodes, parentNode) {
     // append both a li element, 
     // then an ul elmeent right underneath
     if (node.children) {
-      const subFolderTitle = node.title + node.id;
+
+      const subFolderTitle = node.title //+ node.id;
       const listItem = document.createElement('li');
       listItem.textContent = subFolderTitle;
       parentNode.appendChild(listItem);
@@ -106,6 +122,7 @@ function displayBookmarks(nodes, parentNode) {
       displayBookmarks(node.children, sublist);
     }
   }
+
 }
 
 // TODOS --------------------------------------------------------------------------
@@ -356,6 +373,8 @@ function dumpNode(bookmarkNode, query) {
 }
 */
 
+/*
 document.addEventListener('DOMContentLoaded', function () {
-  miniDumpBookmarks();
+  displayBookmarks(); //dumpBookmarks();
 });
+*/

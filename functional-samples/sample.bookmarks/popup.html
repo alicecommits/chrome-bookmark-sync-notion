@@ -1,8 +1,10 @@
 <html>
   <head>
+    
     <link rel="stylesheet" href="third-party/jquery-ui.css" />
     <link rel="stylesheet" href="third-party/jquery-ui.structure.css" />
     <link rel="stylesheet" href="third-party/jquery-ui.theme.css" />
+    
     <!-- trying jsTree -->
     <link rel="stylesheet" href="third-party/dist/themes/default/style.min.css" />
     <link rel="stylesheet" href="popup.css" />
@@ -18,28 +20,31 @@
     <button type="button" id="go">Go Search!</button>
     
     <h1>Bookmark Viewer + Fetch test</h1>
-    
-    <!-- eg from jsTree official website where populated from inline HTML-->
-    <div id="jstree_demo_div">
-      <ul>
-        <li>
-          Root node 1
-          <ul>
-            <li id="child_node_1"><span>[<a href="https://www.notion.so/">Linked Child</a>]</span></li>
-            <li>Child node 2</li>
-          </ul>
-        </li>
-        <li>Root node 2
-          <ul>
-            <li>"test</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <button type="button" id="button1">tree test</button>
-    
+
     <!-- bookmark Tree forming -->
-    <ul id="bookmarkList"></ul>
+    <div id="bookmarkList"></div>
+
+    <h1>tree test</h1>
+    <div id="mytree">
+      <ul><li>Node 1<ul><li>
+                      Node 1.1
+                  </li>
+                  <li>
+                      Node 1.2
+                      <ul>
+                          <li>
+                              Node 1.2.1
+                          </li>
+                      </ul>
+                  </li>
+              </ul>
+          </li>
+          <li>
+              Node 2
+          </li>
+      </ul>
+  </div>
+
     <div id="editdialog"></div>
     <div id="deletedialog"></div>
     <div id="adddialog"></div>
