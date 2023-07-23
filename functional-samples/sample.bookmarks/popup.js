@@ -58,72 +58,90 @@ chrome.bookmarks.getTree((tree) => {
 //const injectTreeHere = document.getElementById('injectTreeHere');
 //WRAPPING IN FUNCTION TRIGGERS TREE SHAPING
 $(function () { 
-  $("#mytree").jstree();
+  $(".mytree").jstree();
 });
 
 //GET A SUBTREE - getSubTree('4922') - for Folder Test only:
 const targetId = '4922';
 const bookmarkList = document.getElementById('bookmarkList');
+const targetTreeUl = document.getElementById('targetTreeUl');
 
 chrome.bookmarks.getSubTree(targetId)
 .then( (res) => displayBookmarks(res, bookmarkList) )
-.then( () => $("#bookmarkList").jstree() )
+//.then( () => $("#bookmarkList").jstree() )
 .catch( (err) => console.log(err) );
 
 /*
 $(function () {
   $("#bookmarkList").jstree();
 });
-*/
 
 
-
-//TOTRY rewrite with other async/await or arrow func?
-/*
-//use this to rewrite chrome bookmarks
-const convertStringToHTML = htmlString => {
-  const parser = new DOMParser();
-  const html = parser.parseFromString(htmlString, 'text/html');
-
-  return html.body;
+function wrapBookmarksinUL(nodes, parentNode, targetDiv) {
+  targetDiv.innerHTML = displayBookmarks(nodes, parentNode);
 }
 */
 
-
-
-//TODO: try to wrap all children within subtree with jsTree...
-
 // Recursively display the bookmarks
 function displayBookmarks(nodes, parentNode) {
+
   for (const node of nodes) {
-    // If the node is a bookmark, create a list item and append it to the parent node
-    if (node.url) {
-      const listItem = document.createElement('li');
-      listItem.textContent = node.title;
-      parentNode.appendChild(listItem);
-    }
+
+    const li = document.createElement('li');
     
     // If the node has children (=> is a folder), recursively display them
-    // Problem with 1st case: using node.url property doesn't capture 
-    // subfolders title! and neither does the original "has children" case below
-    // TODO report fix sugggestion:
-    // append both a li element, 
-    // then an ul elmeent right underneath
+    // Fixed DOM manip to have nesting of <ul><li>... as needed for a tree
     if (node.children) {
 
-      const subFolderTitle = node.title //+ node.id;
-      const listItem = document.createElement('li');
-      listItem.textContent = subFolderTitle;
-      parentNode.appendChild(listItem);
+      //const span = document.createElement('span');
+      //span.textContent = node.title;
+      li.textContent = node.title;
 
-      const sublist = document.createElement('ul');
-      parentNode.appendChild(sublist);
+      const ul = document.createElement("ul");
+      li.append(ul);
+      parentNode.append(li);
 
-      displayBookmarks(node.children, sublist);
+      displayBookmarks(node.children, ul);
+
+    } else {
+      li.textContent = node.title;
+      parentNode.append(li)
     }
   }
 
 }
+
+
+
+//xp
+const expDiv = document.getElementById('expdiv');
+
+const ul = document.createElement('ul');
+
+const li1 = document.createElement('li');
+const li2 = document.createElement('li');
+const li3 = document.createElement('li');
+const li4 = document.createElement('li');
+
+li1.textContent = "C";
+li2.textContent = "C++";
+li3.textContent = "Java";
+li4.textContent = "Python";
+
+li3.append(li4)
+li2.append(li3)
+li1.append(li2)
+ul.append(li1)
+
+
+const ul0 = document.createElement('ul');
+const li0 = document.createElement('li');
+li0.textContent = "Programming Lang";
+
+li0.append(ul)
+ul0.append(li0)
+expDiv.append(ul0)
+
 
 // TODOS --------------------------------------------------------------------------
 // Objective with jsTree:
