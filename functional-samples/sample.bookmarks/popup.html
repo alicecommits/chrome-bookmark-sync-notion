@@ -13,44 +13,24 @@
   </head>
   <body>
     <!-- Fetch test + Search input (from old samples) -->
-    <div>Result from JSON PlaceHolder: </div>
+    <h1>Fetch Test</h1>
+    <div>Result from JSON PlaceHolder API: </div>
     <button type="button" id="fetch1">fetch test</button>
     <div id="result"></div>
-    <div>Search Bookmarks: <input id="search" /></div>
-    <button type="button" id="go">Go Search!</button>
     
-    <h1>Bookmark Viewer + Fetch test</h1>
-
-    <!-- bookmark Tree forming -->
-    <div id="bookmarkList">
-      <ul id="targetTreeUl"></ul>
+    <!-- 1 folder - bookmark Tree forming -->
+    <h1>Bookmark Viewer - SubTree</h1>
+    <div id="bookmarkContainerSub">
+      <ul id="startNodeUlSub"></ul>
     </div>
 
-    <h1>tree test</h1>
-    <div class="mytree">
-      <ul><li>Node 1<ul><li>
-                      Node 1.1
-                  </li>
-                  <li>
-                      Node 1.2
-                      <ul>
-                          <li>
-                              Node 1.2.1
-                          </li>
-                      </ul>
-                  </li>
-              </ul>
-          </li>
-          <li>
-              Node 2
-          </li>
-      </ul>
-  </div>
+    <!-- All folders - bookmark Tree forming -->
+    <h1>Bookmark Viewer - Entire Tree</h1>
+    <div id="bookmarkContainerFull">
+      <ul id="startNodeUlFull"></ul>
+    </div>
 
-  <h2>experiment here</h2>
-  <div id="expdiv"></div>
-  <h2>end of experiment here</h2>
-
+    <!-- interactive elts from Google bookmark functional samples -->
     <div id="editdialog"></div>
     <div id="deletedialog"></div>
     <div id="adddialog"></div>
