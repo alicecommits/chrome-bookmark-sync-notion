@@ -25,14 +25,16 @@ $("#fetch1").click(function() {
 });
 */
 
+//TODO: instead of at runtime, trigger ONLY at clicking
 // API call: version with service worker in the background 
 // Send Message To Background
 chrome.runtime.sendMessage({name: "fetchDummy"}, (response) => {
   //Wait for Response
 
   //console.log(response);
-  document.getElementById("resultDate").innerText = response.day;
-  document.getElementById("result").innerText = response.desc;
+  //would show "" if innerText
+  document.getElementById("resultDate").innerHTML = response.day; 
+  document.getElementById("result").innerHTML = response.desc;
 
 
 });

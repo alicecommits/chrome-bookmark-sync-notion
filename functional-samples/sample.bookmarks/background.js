@@ -19,9 +19,9 @@ chrome.runtime.onMessage.addListener((msg, sender, response) => {
         }
         res.json().then(function(data) {
           //send the response...
-
+          const wantedData = JSON.stringify(data.body);
           //Response
-          response({day: JSON.stringify(dateStr), desc: JSON.stringify(data)});
+          response({day: dateStr, desc: wantedData});
         });
       }).catch(function(err) {
         response({day: 'Err', desc: 'There was a problem loading the word of the day'});
