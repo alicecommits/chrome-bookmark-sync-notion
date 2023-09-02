@@ -3,7 +3,7 @@
 node_modules
 
 # TBD if to remove completely
-chrome-bookmark-sync-notion/api-samples/
+api-samples/
 
 # Temporary directory for debugging extension samples
 _debug
