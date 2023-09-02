@@ -10,6 +10,8 @@
 // FETCH FEATURE (XHR FOR NOW) -------------------------------------------------------  
 // Using dummy JSON PlaceHolder API https://jsonplaceholder.typicode.com/posts/1
 const myDummyURL = 'https://jsonplaceholder.typicode.com/posts/1';
+
+/*
 $("#fetch1").click(function() {
   let xhr = new XMLHttpRequest();
   xhr.open("GET", myDummyURL, true);
@@ -20,6 +22,19 @@ $("#fetch1").click(function() {
     }
   }
   xhr.send();
+});
+*/
+
+// API call: version with service worker in the background 
+// Send Message To Background
+chrome.runtime.sendMessage({name: "fetchDummy"}, (response) => {
+  //Wait for Response
+
+  //console.log(response);
+  document.getElementById("resultDate").innerText = response.day;
+  document.getElementById("result").innerText = response.desc;
+
+
 });
 
 
