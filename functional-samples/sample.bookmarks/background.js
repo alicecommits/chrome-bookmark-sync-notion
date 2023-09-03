@@ -1,13 +1,14 @@
+//to sanity check bg script is working
+console.log('bg running...');
+
 //Listen for messages
 chrome.runtime.onMessage.addListener((msg, sender, response) => {
 
-    if(msg.name == "fetchDummy"){
-  
+    if(msg.name === "fetchDummy"){
   
       const apiKey = 'your-api-key';
-      const dateStr = new Date().toISOString().slice(0, 10); //2020-01-01
+      const dateStr = new Date().toISOString().slice(0, 10); //YYYY-MM-DD
   
-
       const apiCall = 'https://jsonplaceholder.typicode.com/posts/1';
       console.log(apiCall);
       //We call api..
