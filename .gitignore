@@ -2,9 +2,6 @@
 *.DS_store
 node_modules
 
-# TBD if to remove completely
-api-samples/
-
 # Temporary directory for debugging extension samples
 _debug
 _metadata
