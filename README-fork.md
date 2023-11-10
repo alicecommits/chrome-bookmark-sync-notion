@@ -18,11 +18,16 @@ _Describe how the sample demonstrates the API or use case and briefly describe h
 
 ## Implementation Notes
 
-### TODOs
-- craft connection to 3rd party
+### Dones
 - implement jsTree plugin instead of "plain" jQuery
   - managed to insert the demo tree from jsTree's official demo
 - try add expandable/collapsable feature (here natively in jsTree)
+
+### TODOs
+- craft connection to 3rd party - complete get started on the Notion integration tutorial
+- jsTree interactivity > add selectivity feature - send to Notion subtrees and their children only if side box is ticked
+- jsTree interactivity > add hyperlink feature - if tree node is a non-folder bookmark, then it's a link to somewhere that I want to be able to click directly on the node in the jsTree
+
 
 ## Running this extension
 
